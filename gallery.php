@@ -16,16 +16,16 @@ $categories = $categoryStmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>معرض المناطق</title>
-    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/styles.css">
 </head>
 
 <body>
 
     <nav class="navbar">
-        <a href="index.php" class="navLogo">
-            <p>اكتشف السعودية</p>
-        </a>
         <ul>
+            <li><a href="index.php" class="navLogo">
+                    <p>اكتشف السعودية</p>
+                </a></li>
             <li><a href="index.php">الرئيسية</a></li>
             <li><a href="gallery.php">معرض المناطق</a></li>
             <li><a href="login.php">دخول المشرف</a></li>
@@ -68,21 +68,24 @@ $categories = $categoryStmt->fetchAll();
                 <img src="public/images/<?php echo htmlspecialchars($place['image']); ?>"
                     alt="<?php echo htmlspecialchars($place['name']); ?>">
 
-                <p>
-                    <?php echo htmlspecialchars($place['category']); ?>
-                </p>
+                <div class="card-content">
+                    <div>
+                        <h3>
+                            <?php echo htmlspecialchars($place['name']); ?>
+                        </h3>
 
-                <h3>
-                    <?php echo htmlspecialchars($place['name']); ?>
-                </h3>
+                        <p>
+                            <?php echo htmlspecialchars($place['short_description']); ?>
+                        </p>
 
-                <p>
-                    <?php echo htmlspecialchars($place['short_description']); ?>
-                </p>
-
-                <a href="details.php?id=<?php echo $place['id']; ?>" class="btn">
-                    اكتشف المزيد
-                </a>
+                        <a href="details.php?id=<?php echo $place['id']; ?>" class="btn">
+                            اكتشف المزيد
+                        </a>
+                    </div>
+                    <p class="category">
+                        <?php echo htmlspecialchars($place['category']); ?>
+                    </p>
+                </div>
             </div>
         <?php endforeach ?>
     </section>

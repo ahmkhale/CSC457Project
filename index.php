@@ -11,15 +11,15 @@ $places = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <title>تسجيل الدخول</title>
-    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/styles.css">
 </head>
 
 <body>
     <nav class="navbar">
-        <a href="index.php" class="navLogo">
-            <p>اكتشف السعودية</p>
-        </a>
         <ul>
+            <li><a href="index.php" class="navLogo">
+                    <p>اكتشف السعودية</p>
+                </a></li>
             <li><a href="index.php">الرئيسية</a></li>
             <li><a href="gallery.php">معرض المناطق</a></li>
             <li><a href="login.php">دخول المشرف</a></li>
@@ -31,6 +31,7 @@ $places = $stmt->fetchAll();
 
     <section>
         <div class="hero">
+            <img src="public/images/Saudiv3.jpg" alt="home">
             <h1>أهلاً بكم في السعودية</h1>
             <p>ابدأ رحلتك لاكتشاف مناطق المملكة</p>
             <a href="gallery.php" class="btn">اكتشف المزيد</a>
@@ -41,6 +42,7 @@ $places = $stmt->fetchAll();
         <div class="info-box">
             <h2>الهدف</h2>
             <p>الاطلاع على جمال معالم المملكة</p>
+            <a href="gallery.php" class="btn">اكتشف المزيد</a>
         </div>
         <div class="info-box">
             <h2>المناطق المعروضة</h2>
@@ -55,10 +57,12 @@ $places = $stmt->fetchAll();
                 echo implode('، ', $names);
                 ?>
             </p>
+            <a href="gallery.php" class="btn">اكتشف المزيد</a>
         </div>
         <div class="info-box">
             <h2>التفاصيل</h2>
             <p>عرض صور ومعلومات عن المناطق</p>
+            <a href="gallery.php" class="btn">اكتشف المزيد</a>
         </div>
     </section>
 

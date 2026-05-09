@@ -96,19 +96,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>إضافة مكان</title>
-    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/styles.css">
 </head>
 
 <body>
 
     <nav class="navbar">
-        <a href="dashboard.php" class="navLogo">
-            <p>لوحة التحكم</p>
-        </a>
         <ul>
+            <a href="dashboard.php" class="navLogo">
+                <p>لوحة التحكم</p>
+            </a>
             <li><a href="dashboard.php">الرئيسية</a></li>
             <li><a href="addContent.php">إضافة مكان</a></li>
-            <li><a href="logout.php">تسجيل الخروج</a></li>
+            <li><a href="logout.php" class="btn logout-btn">تسجيل الخروج</a></li>
         </ul>
     </nav>
 

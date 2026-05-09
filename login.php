@@ -4,7 +4,7 @@ require 'db.php';
 
 $error = "";
 
-if (isset($_SESSION['admin'])) { 
+if (isset($_SESSION['admin'])) {
     header("Location: dashboard.php");
     exit;
 }
@@ -39,15 +39,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>تسجيل الدخول</title>
-    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/styles.css">
 </head>
 
 <body>
     <nav class="navbar">
-        <a href="index.php" class="navLogo">
-            <p>اكتشف السعودية</p>
-        </a>
         <ul>
+            <li><a href="index.php" class="navLogo">
+                    <p>اكتشف السعودية</p>
+                </a></li>
             <li><a href="index.php">الرئيسية</a></li>
             <li><a href="gallery.php">معرض المناطق</a></li>
             <li><a href="login.php">دخول المشرف</a></li>

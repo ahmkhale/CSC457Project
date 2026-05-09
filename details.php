@@ -24,15 +24,15 @@ $landmarks = explode('،', $place['landmarks']);
 <head>
     <meta charset="UTF-8">
     <title>التفاصيل</title>
-    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/styles.css">
 </head>
 
 <body>
     <nav class="navbar">
-        <a href="index.php" class="navLogo">
-            <p>اكتشف السعودية</p>
-        </a>
         <ul>
+            <li><a href="index.php" class="navLogo">
+                    <p>اكتشف السعودية</p>
+                </a></li>
             <li><a href="index.php">الرئيسية</a></li>
             <li><a href="gallery.php">معرض المناطق</a></li>
             <li><a href="login.php">دخول المشرف</a></li>
@@ -48,41 +48,39 @@ $landmarks = explode('،', $place['landmarks']);
             alt="<?php echo htmlspecialchars($place['name']); ?>" class="details-main-image">
 
         <div class="details-section-card-content">
-            <h2><?php echo htmlspecialchars($place['name']); ?></h2>
-
+            <h1><?php echo htmlspecialchars($place['name']); ?></h1>
             <p><?php echo htmlspecialchars($place['region']); ?></p>
             <p><?php echo htmlspecialchars($place['category']); ?></p>
 
-            <p><?php echo htmlspecialchars($place['short_description']); ?></p>
-
-            <h2>نبذة تفصيلية</h2>
-            <p><?php echo htmlspecialchars($place['full_description']); ?></p>
-
-            <h2>أبرز المعالم</h2>
-            <ul>
-                <?php foreach ($landmarks as $landmark): ?>
-                    <li><?php echo htmlspecialchars(trim($landmark)); ?></li>
-                <?php endforeach; ?>
-            </ul>
-
-            <h3>معرض الصور</h3>
-            <div class="details-images">
-                <?php if (!empty($place['image_2'])): ?>
-                    <img src="public/images/<?php echo htmlspecialchars($place['image_2']); ?>"
-                        alt="<?php echo htmlspecialchars($place['image_2']); ?>">
-                <?php endif; ?>
-
-                <?php if (!empty($place['image_3'])): ?>
-                    <img src="public/images/<?php echo htmlspecialchars($place['image_3']); ?>"
-                        alt="<?php echo htmlspecialchars($place['image_3']); ?>">
-                <?php endif; ?>
-
-                <?php if (empty($place['image_2']) && empty($place['image_3'])): ?>
-                    <p>لا توجد صور الآن</p>
-                <?php endif; ?>
+            <div class="details-info">
+                <h2>نبذة عن المنطقة</h2>
+                <p><?php echo htmlspecialchars($place['full_description']); ?></p>
             </div>
-        </div>
 
+            <div class="details-info">
+                <h2>أبرز المعالم</h2>
+                <ul>
+                        <?php foreach ($landmarks as $landmark): ?>
+                        <li><?php echo htmlspecialchars(trim($landmark)); ?></li>
+                        <?php endforeach; ?>
+                </ul>
+            </div>
+
+            <div class="details-info">
+                <h2>معرض الصور</h2>
+                <div class="details-images">
+                        <?php if (!empty($place['image_2'])): ?>
+                        <img src="public/images/<?php echo htmlspecialchars($place['image_2']); ?>" alt="">
+                        <?php endif; ?>
+
+                        <?php if (!empty($place['image_3'])): ?>
+                        <img src="public/images/<?php echo htmlspecialchars($place['image_3']); ?>" alt="">
+                        <?php endif; ?>
+                </div>
+            </div>
+
+            <a href="gallery.php" class="btn">العودة للمعرض</a>
+        </div>
     </section>
 
 
