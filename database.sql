@@ -1,14 +1,14 @@
-CREATE DATABASE IF NOT EXISTS discoverSaudi
+/*CREATE DATABASE IF NOT EXISTS discover_saudi
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
 
-USE discoverSaudi;
-
+USE discover_saudi;
+*/
 CREATE TABLE admins (
   id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(50) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 CREATE TABLE places (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -22,7 +22,7 @@ CREATE TABLE places (
   image_2 VARCHAR(255),
   image_3 VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 INSERT INTO admins (username, password)
 VALUES ('admin', '12345');

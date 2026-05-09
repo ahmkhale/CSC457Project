@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$db = 'discoverSaudi';
+$db = 'discover_saudi';
 $user = 'root';
 $pass = '';
 $charset = 'utf8mb4';
