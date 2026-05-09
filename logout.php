@@ -2,5 +2,7 @@
 session_start();
 session_unset();
 session_destroy();
-echo "سجلت خروجك"
+
+header("Location: login.php?message=logout");
+exit;
 ?>

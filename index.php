@@ -1,10 +1,16 @@
+<?php
+require 'db.php';
+
+$stmt = $pdo->query('SELECT name FROM places ORDER BY id ASC');
+$places = $stmt->fetchAll();
+
+?>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الرئيسية</title>
+    <title>تسجيل الدخول</title>
     <link rel="stylesheet" href="public/css/style.css">
 </head>
 
@@ -38,7 +44,17 @@
         </div>
         <div class="info-box">
             <h2>المناطق المعروضة</h2>
-            <p>الرياض، جدة، الدمام</p>
+            <p>
+                <?php
+                $names = [];
+
+                foreach ($places as $place) {
+                    $names[] = htmlspecialchars($place['name']);
+                }
+
+                echo implode('، ', $names);
+                ?>
+            </p>
         </div>
         <div class="info-box">
             <h2>التفاصيل</h2>
