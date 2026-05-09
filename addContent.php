@@ -9,6 +9,30 @@ if (!isset($_SESSION['admin'])) {
 
 $error = "";
 
+function uploadImage($inputName, $prefix = "")
+{
+    if (empty($_FILES[$inputName]['name'])) {
+        return "";
+    }
+
+    $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+    $extension = strtolower(pathinfo($_FILES[$inputName]['name'], PATHINFO_EXTENSION));
+
+    if (!in_array($extension, $allowed)) {
+        return false;
+    }
+
+    $uploadDir = "public/images/";
+    $fileName = $prefix . uniqid() . "." . $extension;
+    $filePath = $uploadDir . $fileName;
+
+    if (move_uploaded_file($_FILES[$inputName]['tmp_name'], $filePath)) {
+        return $fileName;
+    }
+
+    return false;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = trim($_POST['name']);
     $region = trim($_POST['region']);
@@ -16,9 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $short_description = trim($_POST['short_description']);
     $full_description = trim($_POST['full_description']);
     $landmarks = trim($_POST['landmarks']);
-    $image = trim($_POST['image']);
-    $image_2 = trim($_POST['image_2']);
-    $image_3 = trim($_POST['image_3']);
 
     if (
         empty($name) ||
@@ -26,31 +47,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         empty($category) ||
         empty($short_description) ||
         empty($full_description) ||
-        empty($landmarks) ||
-        empty($image)
+        empty($landmarks)
     ) {
-        $error = "الرجاء تعبئة جميع الحقول المطلوبة";
+        $error = "توجد حقول فارغة.";
     } else {
-        $stmt = $pdo->prepare("
-            INSERT INTO places 
-            (name, region, category, short_description, full_description, landmarks, image, image_2, image_3)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ");
+        $image = uploadImage("image");
 
-        $stmt->execute([
-            $name,
-            $region,
-            $category,
-            $short_description,
-            $full_description,
-            $landmarks,
-            $image,
-            $image_2,
-            $image_3
-        ]);
+        if ($image === "") {
+            $error = "الرجاء رفع الصورة الرئيسية.";
+        } elseif ($image === false) {
+            $error = "نوع الصورة غير مسموح أو حدث خطأ أثناء الرفع.";
+        } else {
+            $image_2 = uploadImage("image_2", "2_");
+            $image_3 = uploadImage("image_3", "3_");
 
-        header("Location: dashboard.php?message=added");
-        exit;
+            if ($image_2 === false || $image_3 === false) {
+                $error = "نوع إحدى الصور غير مسموح أو حدث خطأ أثناء الرفع.";
+            } else {
+                $stmt = $pdo->prepare("
+                    INSERT INTO places
+                    (name, region, category, short_description, full_description, landmarks, image, image_2, image_3)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+
+                $stmt->execute([
+                    $name,
+                    $region,
+                    $category,
+                    $short_description,
+                    $full_description,
+                    $landmarks,
+                    $image,
+                    $image_2,
+                    $image_3
+                ]);
+
+                header("Location: dashboard.php?message=added");
+                exit;
+            }
+        }
     }
 }
 ?>
@@ -60,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <head>
     <meta charset="UTF-8">
-    <title>إضافة محتوى</title>
+    <title>إضافة مكان</title>
     <link rel="stylesheet" href="public/css/style.css">
 </head>
 
@@ -72,65 +107,83 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </a>
         <ul>
             <li><a href="dashboard.php">الرئيسية</a></li>
-            <li><a href="addContent.php">إضافة محتوى</a></li>
+            <li><a href="addContent.php">إضافة مكان</a></li>
             <li><a href="logout.php">تسجيل الخروج</a></li>
         </ul>
     </nav>
 
     <section class="admin-section">
-        <h1>إضافة محتوى جديد</h1>
+        <h1>إضافة مكان جديد</h1>
 
         <?php if (!empty($error)): ?>
-            <p class="error-message">
-                <?php echo htmlspecialchars($error); ?>
-            </p>
+            <p class="error-message"><?php echo htmlspecialchars($error); ?></p>
         <?php endif; ?>
 
-        <form method="POST" action="addContent.php" class="admin-form">
+        <form method="POST" action="addContent.php" enctype="multipart/form-data" class="admin-form">
+
             <div class="input-field">
                 <label>اسم المنطقة أو المدينة *</label>
-                <input type="text" name="name" required>
+                <input type="text" name="name" required value="<?php echo htmlspecialchars($_POST['name'] ?? ''); ?>">
+            </div>
+
+            <div class="input-field">
+                <label>الصورة الرئيسية *</label>
+                <input type="file" name="image" accept="image/*" required>
             </div>
 
             <div class="input-field">
                 <label>المنطقة *</label>
-                <input type="text" name="region" required>
+                <input type="text" name="region" required
+                    value="<?php echo htmlspecialchars($_POST['region'] ?? ''); ?>">
             </div>
 
             <div class="input-field">
                 <label>التصنيف *</label>
-                <input type="text" name="category" required>
+                <select name="category" required>
+                    <option value="">اختر التصنيف</option>
+                    <option value="شمالية" <?php if (($_POST['category'] ?? '') == 'شمالية')
+                        echo 'selected'; ?>>شمالية
+                    </option>
+                    <option value="شرقية" <?php if (($_POST['category'] ?? '') == 'شرقية')
+                        echo 'selected'; ?>>شرقية
+                    </option>
+                    <option value="وسطى" <?php if (($_POST['category'] ?? '') == 'وسطى')
+                        echo 'selected'; ?>>وسطى</option>
+                    <option value="غربية" <?php if (($_POST['category'] ?? '') == 'غربية')
+                        echo 'selected'; ?>>غربية
+                    </option>
+                    <option value="جنوبية" <?php if (($_POST['category'] ?? '') == 'جنوبية')
+                        echo 'selected'; ?>>جنوبية
+                    </option>
+                </select>
             </div>
 
             <div class="input-field">
                 <label>وصف مختصر *</label>
-                <textarea name="short_description" required></textarea>
+                <textarea name="short_description" required
+                    cols="64"><?php echo htmlspecialchars($_POST['short_description'] ?? ''); ?></textarea>
             </div>
 
             <div class="input-field">
                 <label>وصف تفصيلي *</label>
-                <textarea name="full_description" required></textarea>
+                <textarea name="full_description" required
+                    cols="64"><?php echo htmlspecialchars($_POST['full_description'] ?? ''); ?></textarea>
             </div>
 
             <div class="input-field">
                 <label>أبرز المعالم *</label>
-                <textarea name="landmarks" placeholder="مثال: المصمك، برج المملكة، الدرعية التاريخية"
-                    required></textarea>
+                <textarea name="landmarks" placeholder="مثال: المصمك، الدرعية، برج المملكة" required
+                    cols="64"><?php echo htmlspecialchars($_POST['landmarks'] ?? ''); ?></textarea>
             </div>
 
             <div class="input-field">
-                <label>اسم الصورة الرئيسية *</label>
-                <input type="text" name="image" placeholder="example.jpg" required>
+                <label>الصورة الثانية</label>
+                <input type="file" name="image_2" accept="image/*">
             </div>
 
             <div class="input-field">
-                <label>اسم الصورة الثانية</label>
-                <input type="text" name="image_2" placeholder="example_2.jpg">
-            </div>
-
-            <div class="input-field">
-                <label>اسم الصورة الثالثة</label>
-                <input type="text" name="image_3" placeholder="example_3.jpg">
+                <label>الصورة الثالثة</label>
+                <input type="file" name="image_3" accept="image/*">
             </div>
 
             <div class="button-group">

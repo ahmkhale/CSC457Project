@@ -28,27 +28,27 @@ $places = $stmt->fetchAll();
         </a>
         <ul>
             <li><a href="dashboard.php">الرئيسية</a></li>
-            <li><a href="addContent.php">إضافة محتوى</a></li>
+            <li><a href="addContent.php">إضافة مكان</a></li>
             <li><a href="logout.php">تسجيل الخروج</a></li>
         </ul>
     </nav>
 
     <section class="admin-section">
-        <h1>إدارة المحتوى</h1>
+        <h1>إدارة الأماكن</h1>
 
         <?php if (isset($_GET['message']) && $_GET['message'] == "added"): ?>
-            <p class="success-message">تمت إضافة المحتوى بنجاح</p>
+            <p class="success-message">تمت إضافة المكان بنجاح</p>
         <?php endif; ?>
 
         <?php if (isset($_GET['message']) && $_GET['message'] == "updated"): ?>
-            <p class="success-message">تم تحديث المحتوى بنجاح</p>
+            <p class="success-message">تم تحديث المكان بنجاح</p>
         <?php endif; ?>
 
         <?php if (isset($_GET['message']) && $_GET['message'] == "deleted"): ?>
-            <p class="success-message">تم حذف المحتوى بنجاح</p>
+            <p class="success-message">تم حذف المكان بنجاح</p>
         <?php endif; ?>
 
-        <a href="addContent.php" class="btn">إضافة محتوى جديد</a>
+        <a href="addContent.php" class="btn">إضافة مكان جديد</a>
 
         <table class="admin-table">
             <thead>
@@ -74,7 +74,7 @@ $places = $stmt->fetchAll();
                             </a>
 
                             <a href="deleteContent.php?id=<?php echo $place['id']; ?>" class="btn delete-btn"
-                                onclick="return confirm('هل أنت متأكد من حذف هذا المحتوى؟')">
+                                onclick="return confirm('هل أنت متأكد من حذف هذا المكان')">
                                 حذف
                             </a>
                         </td>
